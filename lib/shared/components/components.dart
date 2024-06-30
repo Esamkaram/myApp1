@@ -11,7 +11,7 @@ import 'package:myapp2/shared/cubit/cubit.dart';
   double? width = double.infinity ,
   Color? background = Colors.blue,
   required Function function ,
-  required String? text ,
+  required String text ,
   bool? isUpper = true ,
 })=>
     Container(
@@ -22,7 +22,7 @@ import 'package:myapp2/shared/cubit/cubit.dart';
         function();
       },
       child: Text(
-          isUpper! ?  text!.toUpperCase() : text! ,
+          isUpper! ?  text.toUpperCase() : text ,
         style: TextStyle(
           fontSize: 20.0,
           color: Colors.white,

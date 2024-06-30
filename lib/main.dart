@@ -8,11 +8,14 @@ import 'package:myapp2/modules/shop_app/login/shop_login.dart';
 
 import 'package:myapp2/modules/shop_app/on_bording/onbording_screen.dart';
 import 'package:myapp2/shared/bloc_observer.dart';
+import 'package:myapp2/shared/components/constants.dart';
 import 'package:myapp2/shared/cubit/cubit.dart';
 import 'package:myapp2/shared/cubit/states.dart';
 import 'package:myapp2/shared/network/local/cach_helper.dart';
 import 'package:myapp2/shared/network/remote/dio_helper.dart';
 import 'package:myapp2/styles/themes.dart';
+
+import 'layout/shop_app/cubit/cubit.dart';
 
 
 
@@ -27,14 +30,12 @@ void main() async
   bool? isDark = CacheHelper.getDate(key: 'isDark');
   Widget widget ;
   bool? inBoarding = CacheHelper.getDate(key: 'inBoarding');
-  String? token = CacheHelper.getDate(key: 'token');
+   token = CacheHelper.getDate(key: 'token');
 
-  print(token);
-  print(inBoarding);
 
   if (inBoarding != null)
     {
-      if(token != null) widget = ShopLayout();
+      if(CacheHelper.getDate(key: 'token')  != null) widget = ShopLayout();
       else widget = ShopLogin();
 
     }else{
@@ -46,6 +47,7 @@ void main() async
   // MyApp(isDark!)
   runApp(MyApp(
     isDark: isDark,
+    startWidget: widget,
   ));
 
 }
@@ -70,6 +72,7 @@ class MyApp extends StatelessWidget
         BlocProvider(create: (BuildContext context ) => AppCubit()..changeAppMode(
           fromShared: isDark,
         ), ),
+        BlocProvider(create: (BuildContext context ) => ShopCubit()..getHomeData()..getCategories(),),
       ],
       child: BlocConsumer<AppCubit , AppStates>(
         listener: (context , state){},

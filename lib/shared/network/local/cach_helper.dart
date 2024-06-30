@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CacheHelper
@@ -19,7 +19,7 @@ class CacheHelper
 
 
   static dynamic getDate({
-    required String? key,
+    required String key,
 
   })  {
     return  sharedPreferences.get(key!);
@@ -33,6 +33,12 @@ class CacheHelper
     if(value is int) return await sharedPreferences.setInt(key, value);
     if(value is bool) return await sharedPreferences.setBool(key, value);
     return await sharedPreferences.setDouble(key, value);
+  }
+
+  static Future<bool> removeDate({
+    required String key ,
+  }) async{
+    return await sharedPreferences.remove(key);
   }
 
 

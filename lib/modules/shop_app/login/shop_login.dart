@@ -27,21 +27,20 @@ var formKey = GlobalKey<FormState>();
       child: BlocConsumer<ShopLoginCubit,ShopLoginStates>(
         listener: (context, state){
           if(state is ShopLoginSuccessState){
-            if (state.loginModel.status!){
-              print(state.loginModel.message);
-              print(state.loginModel.data!.token);
+            if   (state.loginModel!.status){
+              print(state.loginModel!.message);
+              print(state.loginModel!.data!.token);
               showToast(
-                message:  state.loginModel.message.toString(),
+                message:   state.loginModel!.message.toString(),
                 state: ToastStates.SUCCESS
               );
-              CacheHelper.saveData(key: 'token', value: state.loginModel.data!.token.toString(),).then((value){
+              CacheHelper.saveData(key: 'token', value: state.loginModel!.data!.token.toString(),
+              ).then((value){
                 navigateAndFinish(context, ShopLayout(),);
               });
-
-
             }else
               {
-                showToast(message: state.loginModel.message.toString() ,
+                showToast(message:  state.loginModel!.message.toString() ,
                     state: ToastStates.ERROR);
               }
           }
@@ -108,12 +107,14 @@ var formKey = GlobalKey<FormState>();
                     height: 30.0,
                   ),
                   ConditionalBuilder(
-                    condition: state is! ShopLoginLodingState,
+                    condition: state is! ShopLoginLoadingState,
                     builder: (context) => defaultButton(
                       function: (){
                         if(formKey.currentState!.validate())
                         {
-                          ShopLoginCubit.get(context).userLogin(email: emailController.text, password: passwordController.text) ;
+                          print('validate');
+
+                                ShopLoginCubit.get(context).userLogin(email: emailController.text, password: passwordController.text) ;
                         }
                       },
                       text: 'login',

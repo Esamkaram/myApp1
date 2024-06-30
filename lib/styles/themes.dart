@@ -4,7 +4,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:myapp2/styles/colors.dart';
 
 ThemeData darkThemes = ThemeData(
-  scaffoldBackgroundColor: HexColor('333739'),
+   scaffoldBackgroundColor: HexColor('333739'),
   primarySwatch: defaultColors,
   appBarTheme: AppBarTheme(
     titleSpacing: 20.0,
@@ -45,7 +45,7 @@ ThemeData darkThemes = ThemeData(
 ) ;
 ThemeData lightThemes = ThemeData(
   primarySwatch: defaultColors ,
-  scaffoldBackgroundColor: Colors.white,
+   scaffoldBackgroundColor: Colors.white,
   appBarTheme: AppBarTheme(
     titleSpacing: 20.0,
     backgroundColor: Colors.white,
@@ -59,7 +59,7 @@ ThemeData lightThemes = ThemeData(
       fontWeight: FontWeight.bold,
     ),
     systemOverlayStyle: SystemUiOverlayStyle(
-      statusBarColor: Colors.red,
+       statusBarColor: Colors.red,
       statusBarIconBrightness: Brightness.dark,
     ),
   ),

@@ -69,7 +69,7 @@ int currentIndex = 0 ;
       url: 'v2/top-headlines',
       query:{
         'country':'eg',
-        'category':'business',
+        'categores':'business',
         'apiKey':'0cbb448d059b43d1972c19a0dfc8e555',
       }, ).then((value) {
       business = value.data['articles'] ;
@@ -95,7 +95,7 @@ int currentIndex = 0 ;
         url: 'v2/top-headlines',
         query:{
           'country':'eg',
-          'category':'sports' ,
+          'categores':'sports' ,
           'apiKey':'0cbb448d059b43d1972c19a0dfc8e555',
         }, ).then((value) {
         sports = value.data['articles'] ;
@@ -125,7 +125,7 @@ int currentIndex = 0 ;
         url: 'v2/top-headlines',
         query: {
           'country': 'eg',
-          'category': 'science',
+          'categores': 'science',
           'apiKey': '0cbb448d059b43d1972c19a0dfc8e555',
         },).then((value) {
         science = value.data['articles'];
