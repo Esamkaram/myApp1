@@ -1,16 +1,13 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:myapp2/modules/shop_app/register/cubit/cubit.dart';
-import 'package:myapp2/modules/shop_app/register/cubit/states.dart';
-
+import 'package:myapp2/layout/social_app/scoial_layout.dart';
+import 'package:myapp2/modules/social_app/social_register/cubit/cubit.dart';
+import 'package:myapp2/modules/social_app/social_register/cubit/states.dart';
 import 'package:myapp2/shared/components/components.dart';
 import 'package:myapp2/shared/network/local/cach_helper.dart';
-
-import '../../../layout/shop_app/shop_layout.dart';
 import '../../../shared/components/constants.dart';
-
-class ShopRegsterScreen extends StatelessWidget {
+class SocialRegsterScreen extends StatelessWidget {
 
   var formKey = GlobalKey<FormState>();
   var nameController = TextEditingController();
@@ -20,27 +17,11 @@ class ShopRegsterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  BlocProvider(
-      create: (BuildContext context) => ShopRegisterCubit(),
-      child: BlocConsumer<ShopRegisterCubit , ShopRegisterStates>(
+      create: (BuildContext context) => SocialRegisterCubit(),
+      child: BlocConsumer<SocialRegisterCubit , SocialRegisterStates>(
         listener: (context , state){
-          if(state is ShopRegisterSuccessState){
-            if   (state.loginModel!.status){
-              print(state.loginModel!.message);
-              print(state.loginModel!.data!.token);
-              showToast(
-                  message:   state.loginModel!.message.toString(),
-                  state: ToastStates.SUCCESS
-              );
-              CacheHelper.saveData(key: 'token', value: state.loginModel!.data!.token.toString(),
-              ).then((value){
-                token = state.loginModel!.data!.token ;
-                navigateAndFinish(context, ShopLayout(),);
-              });
-            }else
-            {
-              showToast(message:  state.loginModel!.message.toString() ,
-                  state: ToastStates.ERROR);
-            }
+          if(state is SocialCreateUserSuccessState){
+           navigateAndFinish(context, ScoialLayout());
           }
 
         },
@@ -62,7 +43,7 @@ class ShopRegsterScreen extends StatelessWidget {
                         SizedBox(
                           height: 20.0,
                         ),
-                        Text('Register new to browse our hot offers',
+                        Text('Register new to communicate with friends',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                         SizedBox(
@@ -128,17 +109,17 @@ class ShopRegsterScreen extends StatelessWidget {
                             }
                           },
                           preFix: Icons.lock_outline,
-                          suffix: ShopRegisterCubit.get(context).suffix,
+                          suffix: SocialRegisterCubit.get(context).suffix,
                           iconSuffixPressed: (){
-                            ShopRegisterCubit.get(context).changePasswordVisibility() ;
+                            SocialRegisterCubit.get(context).changePasswordVisibility() ;
                           },
-                          isPassword: ShopRegisterCubit.get(context).isPassword,
+                          isPassword: SocialRegisterCubit.get(context).isPassword,
                         ),
                         SizedBox(
                           height: 30.0,
                         ),
                         ConditionalBuilder(
-                          condition: state is! ShopRegisterLoadingState ,
+                          condition: state is! SocialRegisterLoadingState ,
                           builder: (context) =>
                               defaultButton(
                             function: (){
@@ -146,7 +127,7 @@ class ShopRegsterScreen extends StatelessWidget {
                               {
                                 print('validate');
 
-                                ShopRegisterCubit.get(context).userRegister(
+                                SocialRegisterCubit.get(context).userRegister(
                                   email: emailController.text,
                                   password: passwordController.text,
                                   name: nameController.text ,

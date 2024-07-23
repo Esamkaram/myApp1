@@ -8,8 +8,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:myapp2/layout/shop_app/shop_layout.dart';
 import 'package:myapp2/modules/shop_app/login/cubit/cubit.dart';
 import 'package:myapp2/modules/shop_app/login/cubit/states.dart';
-import 'package:myapp2/modules/shop_app/register/shop_regster_screen.dart';
+import 'package:myapp2/modules/shop_app/register/regster_screen.dart';
 import 'package:myapp2/shared/components/components.dart';
+import 'package:myapp2/shared/components/constants.dart';
 import 'package:myapp2/shared/network/local/cach_helper.dart';
 import 'package:myapp2/styles/colors.dart';
 
@@ -20,7 +21,6 @@ var formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     var emailController = TextEditingController();
-
     var passwordController = TextEditingController();
     return BlocProvider(
       create: (BuildContext context)=> ShopLoginCubit(),
@@ -36,6 +36,7 @@ var formKey = GlobalKey<FormState>();
               );
               CacheHelper.saveData(key: 'token', value: state.loginModel!.data!.token.toString(),
               ).then((value){
+                token = state.loginModel!.data!.token ;
                 navigateAndFinish(context, ShopLayout(),);
               });
             }else

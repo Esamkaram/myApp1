@@ -1,11 +1,11 @@
-class FavoritesModel {
+class SearchModel {
   bool? status;
   String? message;
   Data? data;
 
 
 
-  FavoritesModel.fromJson(Map<String, dynamic> json) {
+  SearchModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;
@@ -14,7 +14,7 @@ class FavoritesModel {
 
 class Data {
   int? currentPage;
-  List<FavoriteData>? data;
+  List<Product>? data;
   String? firstPageUrl;
   int? from;
   int? lastPage;
@@ -31,9 +31,9 @@ class Data {
   Data.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];
     if (json['data'] != null) {
-      data = <FavoriteData>[];
+      data = <Product>[];
       json['data'].forEach((v) {
-        data!.add(new FavoriteData.fromJson(v));
+        data!.add(new Product.fromJson(v));
       });
     }
     firstPageUrl = json['first_page_url'];
@@ -50,18 +50,18 @@ class Data {
 
 }
 
-class FavoriteData {
-  int? id;
-  Product? product;
-
-  FavoriteData.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    product =
-    json['product'] != null ? new Product.fromJson(json['product']) : null;
-  }
-
-
-}
+// class FavoriteData {
+//   int? id;
+//   Product? product;
+//
+//   FavoriteData.fromJson(Map<String, dynamic> json) {
+//     id = json['id'];
+//     product =
+//     json['product'] != null ? new Product.fromJson(json['product']) : null;
+//   }
+//
+//
+// }
 
 class Product {
   int? id;

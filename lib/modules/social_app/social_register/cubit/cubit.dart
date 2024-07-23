@@ -1,21 +1,19 @@
 
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:myapp2/modules/shop_app/register/cubit/states.dart';
-import 'package:myapp2/shared/components/constants.dart';
-import 'package:myapp2/shared/network/end_points.dart';
-import 'package:myapp2/shared/network/remote/dio_helper.dart';
+import 'package:myapp2/models/social_app/soial_user_model.dart';
+import 'package:myapp2/modules/social_app/social_register/cubit/states.dart';
 
-import '../../../../models/shop_app/login_model.dart';
 
-class ShopRegisterCubit extends Cubit<ShopRegisterStates>
+
+
+class SocialRegisterCubit extends Cubit<SocialRegisterStates>
 {
-  ShopRegisterCubit() : super(ShopRegisterInitialState());
+  SocialRegisterCubit() : super(SocialRegisterInitialState());
 
-  static ShopRegisterCubit get(context) => BlocProvider.of(context);
-   ShopLoginModel? loginMod   ;
-
+  static SocialRegisterCubit get(context) => BlocProvider.of(context);
 
   void userRegister({
     required String email ,
@@ -26,28 +24,57 @@ class ShopRegisterCubit extends Cubit<ShopRegisterStates>
 }) {
 
 
-    emit(ShopRegisterLoadingState());
-
-
-    DioHelper.postData(
-        url: REGISTER,
-        data: {
-          'name': name,
-          'phone': phone,
-          'email': email,
-          'password': password,
-        },
+    emit(SocialRegisterLoadingState());
+    
+    FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email, 
+        password: password
     ).then((value){
-      printFullText(value.toString());
-      loginMod = ShopLoginModel.fromJson(value.data);
-      emit(ShopRegisterSuccessState(loginMod));
-    }).catchError((error){
-      print(error.toString());
-      emit(ShopRegisterErrorState(error.toString()));
+      print(value!.user!.email);
+      print(value!.user!.uid);
+      userCreate(
+        uId: value!.user!.uid,
+        name: name,
+        email: email,
+        phone: phone,
+      );
+      // emit(SocialRegisterSuccessState());
+
+    }).catchError((error) {
+      emit(SocialRegisterErrorState(error.toString()));
+
     });
+
+
   }
 
 
+void userCreate({
+  required String email ,
+  required String name ,
+  required String phone ,
+  required String uId ,
+})
+{
+  SocialUserModel model = SocialUserModel(
+    name: name ,
+    email: email,
+    phone: phone,
+    uId: uId ,
+    image: 'https://img.freepik.com/free-vector/gradient-hajj-background_23-2149430058.jpg?t=st=1720447060~exp=1720450660~hmac=29c221fb80e4a6357dac255725021da28eadc84a82a28f973cd02b96f4a92e25&w=996' ,
+    bio: 'write you bio ',
+    cover: 'https://img.freepik.com/free-vector/gradient-hajj-background_23-2149430058.jpg?t=st=1720447060~exp=1720450660~hmac=29c221fb80e4a6357dac255725021da28eadc84a82a28f973cd02b96f4a92e25&w=996' ,
+    isEmailVerified: false ,
+  ) ;
+
+  FirebaseFirestore.instance
+      .collection('users')
+      .doc(uId).set(model.toMap()).then((value){
+        emit(SocialCreateUserSuccessState());
+  }).catchError((error){
+        emit(SocialCreateUserErrorState(error.toString()));
+  });
+}
 
   IconData suffix = Icons.visibility_outlined ;
   bool isPassword = true ;
@@ -56,7 +83,7 @@ class ShopRegisterCubit extends Cubit<ShopRegisterStates>
   {
     isPassword = !isPassword ;
     suffix = isPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined ;
-    emit(ShopRegisterChangePasswordVisibilityState());
+    emit(SocialRegisterChangePasswordVisibilityState());
 
   }
 

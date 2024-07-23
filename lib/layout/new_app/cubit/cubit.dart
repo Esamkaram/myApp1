@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,16 +63,19 @@ int currentIndex = 0 ;
 
   List <dynamic> business = [] ;
 
-  void getBusiness(){
+  void getBusiness() async{
     emit(NewsGetBusinessLoadingState());
     
-    DioHelper.getData(
+ Response? response =  await  DioHelper.getData(
       url: 'v2/top-headlines',
       query:{
         'country':'eg',
         'categores':'business',
         'apiKey':'0cbb448d059b43d1972c19a0dfc8e555',
       }, ).then((value) {
+        if (value!.statusCode == 200){
+
+        }
       business = value.data['articles'] ;
       print(business[0]['title']);
       emit(NewsGetBusinessSuccessState());
