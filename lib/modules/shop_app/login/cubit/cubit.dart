@@ -22,9 +22,6 @@ class ShopLoginCubit extends Cubit<ShopLoginStates>
     required String password ,
 
 }) {
-    print(email);
-    print(password);
-
     emit(ShopLoginLoadingState());
 
 

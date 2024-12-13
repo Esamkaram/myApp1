@@ -68,6 +68,33 @@ class DioHelper {
   }
 
 
+
+  static Future<Response> putData({
+    required String url,
+    Map<String, dynamic>? query,
+    required Map<String, dynamic>? data,
+    String lang = 'en',
+    String? token,
+
+  }) async
+  {
+
+    dio.options.headers = {
+      'Content-Type': 'application/json',
+      'lang': lang,
+      'Authorization': token ?? '' ,
+    };
+    print('post_header');
+
+    return dio!.put(
+      url,
+      data: data,
+      queryParameters: query,
+
+    );
+
+  }
+
   static void addDioInterceptor() {
     dio.interceptors.add(
       PrettyDioLogger(

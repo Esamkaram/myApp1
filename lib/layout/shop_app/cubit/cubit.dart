@@ -1,8 +1,13 @@
-import 'package:flutter/cupertino.dart';
+
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myapp2/layout/shop_app/cubit/states.dart';
 import 'package:myapp2/models/shop_app/categories_model.dart';
+import 'package:myapp2/models/shop_app/favorites_model.dart';
 import 'package:myapp2/models/shop_app/home_models.dart';
+import 'package:myapp2/models/shop_app/login_model.dart';
 import 'package:myapp2/modules/shop_app/categores/categors_screen.dart';
 import 'package:myapp2/modules/shop_app/favorites/favorits_screen.dart';
 import 'package:myapp2/modules/shop_app/products/products_screen.dart';
@@ -11,9 +16,6 @@ import 'package:myapp2/shared/components/constants.dart';
 import 'package:myapp2/shared/network/end_points.dart';
 import 'package:myapp2/shared/network/remote/dio_helper.dart';
 
-import '../../../models/shop_app/changeFavoritesModels.dart';
-import '../../../models/shop_app/changeFavoritesModels.dart';
-import '../../../models/shop_app/changeFavoritesModels.dart';
 import '../../../models/shop_app/changeFavoritesModels.dart';
 import '../../../shared/network/local/cach_helper.dart';
 
@@ -62,7 +64,7 @@ void getHomeData(){
         });
       });
 
-      print(favorites.toString());
+      // print(favorites.toString());
 
       emit(ShopSuccessHomeDataState());
   }).catchError((error){
@@ -84,7 +86,7 @@ void getHomeData(){
 
       CategoriesMode = CategoriesModel.fromJson(value.data);
 
-      printFullText(CategoriesMode!.toString());
+      // printFullText(CategoriesMode!.toString());
       emit(ShopSuccessCATEGORIESDataState());
     }).catchError((error){
       print(error.toString());
@@ -109,11 +111,13 @@ void getHomeData(){
     ).then((value){
 
       changeFavoritesMode = ChangeFavoritesModel.fromJson(value.data);
-      print(value.data);
+      // print(value.data);
       if (!changeFavoritesMode!.status!)
         {
           favorites[productId] = !favorites[productId]! ;
-        }
+        }else{
+        getFavorites() ;
+      }
 
       emit(ShopSuccessChangeFAVORITESDataState(changeFavoritesMode!));
     }).catchError((error){
@@ -122,7 +126,88 @@ void getHomeData(){
     });
   }
 
+
+  FavoritesModel? FavoritesMode  ;
+
+  void getFavorites(){
+
+    emit(ShopLoadingGetFavoritesState());
+
+    DioHelper.getData(
+      url:  FAVORITES ,
+      token: token ,
+    ).then((value)
+    {
+
+      FavoritesMode = FavoritesModel.fromJson(value.data);
+
+      // printFullText(FavoritesMode!.toString());
+      emit(ShopSuccessGetFavoritesState());
+    }).catchError((error){
+      // print(error.toString());
+      emit(ShopErrorGetFavoritesState(error.toString()));
+    }) ;
+  }
+
+  ShopLoginModel?  ShopLoginMode  ;
+
+  void getUserProfile()
+  {
+
+    // emit(ShopLoadingGetProfileState());
+
+    DioHelper.getData(
+      url:  PROFILE ,
+      token: token ,
+    ).then((value)
+    {
+
+      ShopLoginMode = ShopLoginModel.fromJson(value.data);
+
+      // printFullText(ShopLoginMode!.data!.name!);
+      emit(ShopSuccessGetProfileState(ShopLoginMode));
+    }).catchError((error){
+      print(error.toString());
+      emit(ShopErrorGetProfileState(error.toString()));
+    }) ;
+  }
+
+
+  void updateUserProfile({
+    required String name ,
+    required String email ,
+    required String phone ,
+
+
+})
+  {
+
+    emit(ShopLoadingUpdateProfileState());
+
+    DioHelper.putData(
+      url:  UPDATE_PROFILE ,
+      token: token ,
+      data: {
+        'name': name,
+        'email':email,
+        'phone':phone,
+      },
+    ).then((value)
+    {
+
+      ShopLoginMode = ShopLoginModel.fromJson(value.data);
+
+      // printFullText(ShopLoginMode!.data!.name!);
+      emit(ShopSuccessUpdateProfileState(ShopLoginMode));
+    }).catchError((error){
+      print(error.toString());
+      emit(ShopErrorUpdateProfileState(error.toString()));
+    }) ;
+  }
+
 }
+
+
 
 
 

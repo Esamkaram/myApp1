@@ -14,6 +14,7 @@ ThemeData darkThemes = ThemeData(
         color: Colors.white
     ),
     titleTextStyle: TextStyle(
+      fontFamily: 'Jannah' ,
       color: Colors.white,
       fontSize: 18.0,
       fontWeight: FontWeight.bold,
@@ -36,9 +37,17 @@ ThemeData darkThemes = ThemeData(
   ),
   textTheme: TextTheme(
     bodyLarge: TextStyle(
+      fontFamily: 'Jannah' ,
       fontSize: 18.0,
       fontWeight: FontWeight.w600,
       color:Colors.white,
+    ),
+    titleSmall: TextStyle(
+      fontSize: 14.0,
+      fontFamily: 'Jannah' ,
+      fontWeight: FontWeight.w600,
+      color: Colors.white,
+      height: 1.4,
     ),
   ),
   fontFamily: 'Jannah' ,
@@ -54,6 +63,7 @@ ThemeData lightThemes = ThemeData(
         color: Colors.black
     ),
     titleTextStyle: TextStyle(
+      fontFamily: 'Jannah' ,
       color: Colors.black,
       fontSize: 18.0,
       fontWeight: FontWeight.bold,
@@ -76,9 +86,17 @@ ThemeData lightThemes = ThemeData(
   ),
   textTheme: TextTheme(
     bodyLarge: TextStyle(
+      fontFamily: 'Jannah' ,
       fontSize: 18.0,
       fontWeight: FontWeight.w600,
       color:Colors.black,
+    ),
+    titleSmall: TextStyle(
+      fontSize: 14.0,
+      fontFamily: 'Jannah' ,
+      fontWeight: FontWeight.w600,
+      color: Colors.black,
+      height: 1.4,
     ),
   ),
    fontFamily: 'Jannah' ,
